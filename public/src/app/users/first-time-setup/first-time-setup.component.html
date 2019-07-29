@@ -1,0 +1,88 @@
+<div class="container-fluid">
+  <div class="wrapper fadeInDown">
+      <div id="formContent">
+          <!-- Tabs Titles -->
+          <h2 class="inactive underlineHover">First Time Setup</h2>
+  
+          <!-- First Time Setup Form -->
+          <form [formGroup]="firsttimesetupForm" (ngSubmit)="onSubmit()">
+            <label for="appDetails"> App Settings </label>
+            <div class="form-group row" name="appDetails">
+              <div class="col-md-12">
+                <input formControlName="appName" type="text" name="appName" placeholder="App Name" [ngClass]="{'invalid-textbox' :(submitted || f.appName.touched) && !f.appName.valid }">
+                <div *ngIf="(submitted || f.appName.touched) && f.appName.errors">
+                  <label class="validation-message" *ngIf="f.appName.errors.required">This field is required.</label>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <input formControlName="appLogoURL" type="text" name="appLogoURL" placeholder="App Logo PATH" [ngClass]="{'invalid-textbox' :(submitted || f.appLogoURL.touched) && !f.appLogoURL.valid }">
+                <div *ngIf="(submitted || f.appLogoURL.touched) && f.appLogoURL.errors">
+                  <label class="validation-message" *ngIf="f.appLogoURL.errors.required">This field is required.</label>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <input formControlName="appfavIcon" type="text" name="appfavIcon" placeholder="App favicon PATH" [ngClass]="{'invalid-textbox' :(submitted || f.appfavIcon.touched) && !f.appfavIcon.valid }">
+                <div *ngIf="(submitted || f.appfavIcon.touched) && f.appfavIcon.errors">
+                  <label class="validation-message" *ngIf="f.appfavIcon.errors.required">This field is required.</label>
+                </div>
+              </div>
+            </div>
+            <!-- Admin Registration -->
+            <label for="admin-register"> Admin Registration </label>
+            <div class="form-group row" name="admin-register">
+              <div class="col-md-12">
+                <input formControlName="firstName" type="text" name="firstName" placeholder="First Name" [ngClass]="{'invalid-textbox' :(submitted || f.firstName.touched) && !f.firstName.valid }">
+                <div *ngIf="(submitted || f.firstName.touched) && f.firstName.errors">
+                  <label class="validation-message" *ngIf="f.firstName.errors.required">This field is required.</label>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <input formControlName="lastName" type="text" name="lastName" placeholder="Last Name" [ngClass]="{'invalid-textbox' :(submitted || f.lastName.touched) && !f.lastName.valid }">
+                <div *ngIf="(submitted || f.lastName.touched) && f.lastName.errors">
+                  <label class="validation-message" *ngIf="f.lastName.errors.required">This field is required.</label>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <input formControlName="userName" type="text" name="userName" placeholder="User Name" [ngClass]="{'invalid-textbox' :(submitted || f.userName.touched) && !f.userName.valid }">
+                <div *ngIf="(submitted || f.userName.touched) && f.userName.errors">
+                  <label class="validation-message" *ngIf="f.userName.errors.required">This field is required.</label>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <input formControlName="email" type="text" name="email" placeholder="Email" [ngClass]="{'invalid-textbox' :(submitted || f.email.touched) && !f.email.valid }">
+                <div *ngIf="(submitted || f.email.touched) && f.email.errors">
+                  <label class="validation-message" *ngIf="f.email.errors.required">This field is required.</label>
+                  <label class="validation-message" *ngIf="f.email.errors.email">Enter the valid email address.</label>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <input formControlName="mobileNumber" type="text" name="mobileNumber" placeholder="Mobile Number" [ngClass]="{'invalid-textbox' :(submitted || f.mobileNumber.touched) && !f.mobileNumber.valid }">
+                <div *ngIf="(submitted || f.mobileNumber.touched) && f.mobileNumber.errors">
+                  <label class="validation-message" *ngIf="f.mobileNumber.errors.required">This field is required.</label>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <input formControlName="password" type="password" name="password" placeholder="Password" [ngClass]="{'invalid-textbox' :(submitted || f.password.touched) && !f.password.valid }">
+                <div *ngIf="(submitted || f.password.touched) && f.password.errors">
+                  <label class="validation-message" *ngIf="f.password.errors.required">This field is required.</label>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12">
+                <!-- <input type="submit" value="Setup App Now"> -->
+                <button type="submit" class="btn btn-success" style="padding: 15px 80px; margin-bottom: 40px"><i class="fa fa-magic"></i>&nbsp;&nbsp;&nbsp;Setup App Now</button>
+            </div>
+          </form>
+                  
+          <!-- Success message -->
+          <div class="success" *ngIf="showSucessMessage">
+          Saved successfully
+          </div>
+          
+          <!-- Error message -->
+          <div class="alert" *ngIf="serverErrorMessages">
+          {{serverErrorMessages}}
+          </div>
+      </div>
+  </div>
+</div>

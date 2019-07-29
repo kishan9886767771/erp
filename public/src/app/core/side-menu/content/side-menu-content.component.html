@@ -1,0 +1,60 @@
+<app-condense #condenseMenu [ngClass]="condenseMenu.menuState">
+  
+  <!-- Reminders Section -->
+  <a class="simple-menu-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}" [routerLink]="['/dashboard/reminders']">
+    <i class="menu-item-icon fa fa-envelope-open"></i>
+    <span class="menu-item-title">Reminders</span>
+  </a>
+
+  <!-- Invoices Section -->
+  <a class="simple-menu-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}" [routerLink]="['/dashboard/invoices']">
+    <i class="menu-item-icon fa fa-file-text"></i>
+    <span class="menu-item-title">Invoices</span>
+  </a>
+
+  <!-- Rental Agreements Section -->
+  <a class="simple-menu-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}" [routerLink]="['/dashboard/rental-agreements']">
+    <i class="menu-item-icon fa fa-clipboard"></i>
+    <span class="menu-item-title">Rental Agreements</span>
+  </a>
+
+  <!-- Tenants Section -->
+  <a class="simple-menu-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}" [routerLink]="['/dashboard/tenants']">
+    <i class="menu-item-icon fa fa-users"></i>
+    <span class="menu-item-title">Tenants</span>
+  </a>
+
+  <!-- Units Section -->
+  <a class="simple-menu-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}" [routerLink]="['/dashboard/units']">
+    <i class="menu-item-icon fa fa-bar-chart"></i>
+    <span class="menu-item-title">Units</span>
+  </a>
+
+  <!-- Companies Section -->
+  <a class="simple-menu-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}" [routerLink]="['/dashboard/companies']">
+    <i class="menu-item-icon fa fa-building-o"></i>
+    <span class="menu-item-title">Companies</span>
+  </a>
+
+  <!-- Manage Items Section -->
+  <a class="simple-menu-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}" [routerLink]="['/dashboard/manage-items']">
+    <i class="menu-item-icon fa fa-th-large"></i>
+    <span class="menu-item-title">Manage Items</span>
+  </a>
+
+  <!-- User Management Section -->
+  <a class="simple-menu-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}" [routerLink]="['/dashboard/user-management']">
+    <i class="menu-item-icon fa fa-universal-access"></i>
+    <span class="menu-item-title">User Management</span>
+  </a>
+
+  <!-- Backup & Restore Section -->
+  <a class="simple-menu-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}" [routerLink]="['/dashboard/backup-restore']">
+    <i class="menu-item-icon fa fa-recycle"></i>
+    <span class="menu-item-title">Backup & Restore</span>
+  </a>
+
+</app-condense>
+<div class="condense-toggle-wrapper" [ngClass]="{'condensed': condenseMenu.menuState == 'condensed'}">
+  <span (click)="condenseMenu.toggleState()" class="condense-toogle"></span>
+</div>

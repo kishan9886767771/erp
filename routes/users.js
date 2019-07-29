@@ -1,0 +1,191 @@
+var express = require('express');
+var router = express.Router();
+
+var User = require('../models/User');
+var MaintenanceItems = require('../models/MaintenanceItem');
+var Company = require('../models/Company');
+var Unit = require('../models/Unit');
+var Tenant = require('../models/Tenant');
+var RentalAgreement = require('../models/RentalAgreement');
+var Invoice = require('../models/Invoice');
+
+var settings = require('../config/settings');
+var passport = require('passport');
+var AdminRole = settings.UserRoles.Admin;
+var config = require('../config/config');
+var fs = require('fs');
+var mongodb = require('mongodb');
+
+/* GET users listing. */
+// router.get('/', function(req, res, next) {
+//   res.send('respond with a resource');
+// });
+
+// Login Route
+router.post('/login',function(req, res, next){
+  passport.authenticate('local', function(err, user, info) {
+    if (err) { return res.status(501).json(err); }
+    if (!user) { return res.status(501).json(info); }
+    req.logIn(user, function(err) {
+      if (err) { return res.status(501).json(err); }
+      return res.status(200).json({message:'Login Success'});
+    });
+  })(req, res, next);
+});
+
+// Loged in user alidation Route
+router.get('/validate-login',isValidUser,function(req,res,next){
+  return res.status(200).json(req.user);
+});
+
+// Logout Route
+router.get('/logout', isValidUser, function(req,res,next){
+  req.logOut();
+  return res.status(200).json({message: "Logout Success"});
+});
+
+// Route to Delete User
+router.delete('/delete/:id', function (req, res) {
+  User.findByIdAndRemove({_id: new mongodb.ObjectID(req.params.id)}, function(err, data){
+    if(err) return res.status(501).json(err);
+    else return res.status(201).json(data);
+  });
+});
+
+// Route to Validate App Configrations
+router.get('/validate-first-time-setup', function(req,res,next){
+  if (config.initConfig === true)
+    return res.status(401).json({message: "App Not configured"});
+  else
+    return res.status(200).json({message: "App configured"})
+});
+
+// Route to Config App
+router.post('/first-time-setup',function(req,res,next){
+  config.appName = req.body.appName,
+  config.logoURL = req.body.appLogoURL,
+  config.favIcon = req.body.appfavIcon,
+  config.initConfig = false
+  // Writing Data into config.json file
+  fs.writeFile('./config/config.json', JSON.stringify(config), function(err) {
+    if(err) {
+      console.log(err)
+      return res.status(501).json({message:"App Not Configured"})
+    }
+    else addToDB(req,res);
+  });
+});
+
+// Route to Add User
+router.post('/add-user',function(req,res,next){
+  addUserToDB(req,res);
+});
+
+// Route to get all users
+router.get('/get-all-users', function (req, res, next){
+  User.find(function (err, users){
+    if(err) return res.status(501).json({message: "Users Data Fetch Failed"});
+    else return res.status(200).json(users);
+  })
+});
+
+// Route to get all users
+router.get('/get-all-maintenance-items', function (req, res, next){
+  MaintenanceItems.find(function (err, users){
+    if(err) return res.status(501).json({message: "Maintenance Data Fetch Failed"});
+    else return res.status(200).json(users);
+  })
+});
+
+// Route to get all compines
+router.get('/get-all-companies', function (req, res, next){
+  Company.find(function (err, users){
+    if(err) return res.status(501).json({message: "Company Data Fetch Failed"});
+    else return res.status(200).json(users);
+  })
+});
+
+// Route to get all Units
+router.get('/get-all-units', function (req, res, next){
+  Unit.find(function (err, users){
+    if(err) return res.status(501).json({message: "Company Data Fetch Failed"});
+    else return res.status(200).json(users);
+  })
+});
+
+// Route to get all Tenants
+router.get('/get-all-tenants', function (req, res, next){
+  Tenant.find(function (err, users){
+    if(err) return res.status(501).json({message: "Company Data Fetch Failed"});
+    else return res.status(200).json(users);
+  })
+});
+
+// Route to get all Rental Agreements
+router.get('/get-all-rental-agreements', function (req, res, next){
+  RentalAgreement.find(function (err, users){
+    if(err) return res.status(501).json({message: "Company Data Fetch Failed"});
+    else return res.status(200).json(users);
+  })
+});
+
+// Route to get all Invoices
+router.get('/get-all-invoices', function (req, res, next){
+  Invoice.find(function (err, users){
+    if(err) return res.status(501).json({message: "Company Data Fetch Failed"});
+    else return res.status(200).json(users);
+  })
+});
+
+// Methods
+
+// Method to Vilidate User
+function isValidUser(req,res,next){
+  if(req.isAuthenticated()) next();
+  return res.status(401).json({message: "Unauthorized Request"});
+}
+
+// method to Add First Admin To DB
+async function addToDB(req,res){
+  var user = new User({
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    mobileNumber: req.body.mobileNumber,
+    email: req.body.email,
+    password: User.hashPassword(req.body.password),
+    username: req.body.username,
+    role: AdminRole
+  });
+  
+  try{
+    doc = await User.createUser(user);
+    return res.status(201).json("User Added To DB.");
+  }
+  catch(err){
+    return res.status(501).json(err);
+  }
+}
+
+// Method to add User to DB
+async function addUserToDB(req,res){
+  var user = new User({
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    mobileNumber: req.body.mobileNumber,
+    email: req.body.email,
+    password: User.hashPassword(req.body.password),
+    username: req.body.userName,
+    role: req.body.role
+  });
+  
+  try{
+    doc = await User.createUser(user);
+    console.log(doc);
+    return res.status(201).json("User Added To DB.");
+  }
+  catch(err){
+    return res.status(501).json(err);
+  }
+}
+
+module.exports = router;
