@@ -180,6 +180,8 @@ export class DashboardService {
     });
   }
 
+
+
   getCompanyTableData(): Promise<any> {
     return new Promise((resolve, reject) => {
       this._http.get('http://localhost:3000/users/get-all-companies')

@@ -167,6 +167,7 @@ router.get('/get-company/:id', function (req, res){
   })
 });
 
+
 // Edit Item Route
 router.post('/edit-company',function(req,res,next){
   req.body.phoneNo = req.body.phoneNo.map(function (item) { return item.phoneNo; });
@@ -190,11 +191,15 @@ router.post('/edit-company',function(req,res,next){
     notes: req.body.notes
   } }; 
 
-  Company.findByIdAndUpdate({ _id: req.body.id }, newvalues, function(err, data){
+  Company.findByIdAndUpdate({ _id: req.body._id }, newvalues, function(err, data){
     if(err) return res.status(501).json(err);
-    else return res.status(201).json(data);
+    else {
+      console.log(data);
+      return res.status(201).json(data)
+    };
   })
 });
+
 
 // Route to Delete Item
 router.delete('/delete-company/:id', function (req, res) {
