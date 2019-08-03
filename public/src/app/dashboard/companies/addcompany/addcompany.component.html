@@ -1,0 +1,128 @@
+<div class="modal-register">
+  <div class="modal-register-form">
+    <h2 class="modal-title">Add New Company</h2>
+    <form class="form-horizontal" [formGroup]="addCompanyForm" (ngSubmit)="onSubmit()">
+      <div class="col-md-12">
+        <input formControlName="name" type="text" name="name" class="form-control" placeholder="Name"
+        [ngClass]="{'invalid-textbox' :(submitted || f.name.touched) && !f.name.valid }">
+        <div *ngIf="(submitted || f.name.touched) && f.name.errors">
+          <label class="validation-message" *ngIf="f.name.errors.required">This field is required.</label>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <input formControlName="addressLine1" type="text" name="addressLine1" class="form-control" placeholder="Address 1"
+        [ngClass]="{'invalid-textbox' :(submitted || f.addressLine1.touched) && !f.addressLine1.valid }">
+        <div *ngIf="(submitted || f.addressLine1.touched) && f.addressLine1.errors">
+          <label class="validation-message" *ngIf="f.addressLine1.errors.required">This field is required.</label>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <input formControlName="addressLine2" type="text" name="addressLine2" class="form-control" placeholder="Address 2"
+        [ngClass]="{'invalid-textbox' :(submitted || f.addressLine2.touched) && !f.addressLine2.valid }">
+        <div *ngIf="(submitted || f.addressLine2.touched) && f.addressLine2.errors">
+          <label class="validation-message" *ngIf="f.addressLine2.errors.required">This field is required.</label>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <input formControlName="city" type="text" name="city" class="form-control" placeholder="City"
+        [ngClass]="{'invalid-textbox' :(submitted || f.city.touched) && !f.city.valid }">
+        <div *ngIf="(submitted || f.city.touched) && f.city.errors">
+          <label class="validation-message" *ngIf="f.city.errors.required">This field is required.</label>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <input formControlName="state" type="text" name="state" class="form-control" placeholder="State"
+        [ngClass]="{'invalid-textbox' :(submitted || f.state.touched) && !f.state.valid }">
+        <div *ngIf="(submitted || f.state.touched) && f.state.errors">
+          <label class="validation-message" *ngIf="f.state.errors.required">This field is required.</label>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <input formControlName="pincode" type="text" name="pincode" class="form-control" placeholder="Pincode"
+        [ngClass]="{'invalid-textbox' :(submitted || f.pincode.touched) && !f.pincode.valid }">
+        <div *ngIf="(submitted || f.pincode.touched) && f.pincode.errors">
+          <label class="validation-message" *ngIf="f.pincode.errors.required">This field is required.</label>
+        </div>
+      </div>
+      <div class="col-md-12" formArrayName="phoneNo" style="margin-left: 15px">
+          <div *ngFor="let phone of addCompanyForm.controls.phoneNo.controls; let i=index">
+              <div [formGroupName]="i">
+                  <div class="row">
+                      <input formControlName="phoneNo" type="text" name="phoneNo" class="form-control col-md-9" placeholder="Phone No">
+                      <button type="button" class="btn" style="font-size: 18px; border: none; outline:none; background-color: transparent; display: inline-block; vertical-align: sub;" (click)="addPhone()"><span class="glyphicon glyphicon-plus"></span></button>
+                      <button type="button" class="btn" style="font-size: 18px; border: none; outline:none; background-color: transparent; display: inline-block; vertical-align: sub;" (click)="removePhone(i)" *ngIf="addCompanyForm.controls.phoneNo.controls.length > 1"><span class="glyphicon glyphicon-minus"></span></button>
+                  </div>
+              </div>
+          </div>
+        </div>
+        <div class="col-md-12" formArrayName="mobileNo" style="margin-left: 15px">
+          <div *ngFor="let phone of addCompanyForm.controls.mobileNo.controls; let i=index">
+              <div [formGroupName]="i">
+                  <div class="row">
+                      <input formControlName="mobileNo" type="text" name="mobileNo" class="form-control col-md-9" placeholder="Mobile No">
+                      <button type="button" class="btn" style="font-size: 18px; border: none; outline:none; background-color: transparent; display: inline-block; vertical-align: sub;" (click)="addMobile()"><span class="glyphicon glyphicon-plus"></span></button>
+                      <button type="button" class="btn" style="font-size: 18px; border: none; outline:none; background-color: transparent; display: inline-block; vertical-align: sub;" (click)="removeMobile(i)" *ngIf="addCompanyForm.controls.mobileNo.controls.length > 1"><span class="glyphicon glyphicon-minus"></span></button>
+                  </div>
+              </div>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <input formControlName="email" type="text" name="email" class="form-control" placeholder="Email"
+          [ngClass]="{'invalid-textbox' :(submitted || f.email.touched) && !f.email.valid }">
+          <div *ngIf="(submitted || f.email.touched) && f.email.errors">
+            <label class="validation-message" *ngIf="f.email.errors.required">This field is required.</label>
+            <label class="validation-message" *ngIf="f.email.errors.email">Invalid Email.</label>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <input formControlName="panNumber" type="text" name="panNumber" class="form-control" placeholder="Pan Number"
+          [ngClass]="{'invalid-textbox' :(submitted || f.panNumber.touched) && !f.panNumber.valid }">
+          <div *ngIf="(submitted || f.panNumber.touched) && f.panNumber.errors">
+            <label class="validation-message" *ngIf="f.panNumber.errors.required">This field is required.</label>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <input formControlName="accountNumber" type="text" name="accountNumber" class="form-control" placeholder="Account Number"
+          [ngClass]="{'invalid-textbox' :(submitted || f.accountNumber.touched) && !f.accountNumber.valid }">
+          <div *ngIf="(submitted || f.accountNumber.touched) && f.accountNumber.errors">
+            <label class="validation-message" *ngIf="f.accountNumber.errors.required">This field is required.</label>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <input formControlName="IFSC" type="text" name="IFSC" class="form-control" placeholder="IFSC"
+          [ngClass]="{'invalid-textbox' :(submitted || f.IFSC.touched) && !f.IFSC.valid }">
+          <div *ngIf="(submitted || f.IFSC.touched) && f.IFSC.errors">
+            <label class="validation-message" *ngIf="f.IFSC.errors.required">This field is required.</label>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <input formControlName="GSTIN" type="text" name="GSTIN" class="form-control" placeholder="GSTIN"
+          [ngClass]="{'invalid-textbox' :(submitted || f.GSTIN.touched) && !f.GSTIN.valid }">
+          <div *ngIf="(submitted || f.GSTIN.touched) && f.GSTIN.errors">
+            <label class="validation-message" *ngIf="f.GSTIN.errors.required">This field is required.</label>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <input formControlName="bankName" type="text" name="bankName" class="form-control" placeholder="Bank Name"
+          [ngClass]="{'invalid-textbox' :(submitted || f.bankName.touched) && !f.bankName.valid }">
+          <div *ngIf="(submitted || f.bankName.touched) && f.bankName.errors">
+            <label class="validation-message" *ngIf="f.bankName.errors.required">This field is required.</label>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <input formControlName="bankBranch" type="text" name="bankBranch" class="form-control" placeholder="Bank Branch"
+          [ngClass]="{'invalid-textbox' :(submitted || f.bankBranch.touched) && !f.bankBranch.valid }">
+          <div *ngIf="(submitted || f.bankBranch.touched) && f.bankBranch.errors">
+            <label class="validation-message" *ngIf="f.bankBranch.errors.required">This field is required.</label>
+          </div>
+        </div>
+        <div class="col-md-12" style="margin-bottom: 15px">
+          <textarea formControlName="notes" class="form-control" rows="5" name="notes" placeholder="notes"></textarea>
+          <div *ngIf="(submitted || f.notes.touched) && f.notes.errors">
+            <label class="validation-message" *ngIf="f.notes.errors.required">This field is required.</label>
+          </div> 
+        </div>
+      <input type="submit" class="btn btn-register" value="Add Company">
+    </form>
+  </div>
+</div>

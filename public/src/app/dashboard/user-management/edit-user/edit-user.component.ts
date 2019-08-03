@@ -1,52 +1,71 @@
 import { Component, ViewEncapsulation, OnInit } from '@angular/core';
 import { NgForm, FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { DashboardService } from '../../dashboard.service';
 import { Router } from '@angular/router';
 var settings = require('../../../../../../config/settings');
+import { Inject } from '@angular/core';
 
 @Component({
-  selector: 'app-modal-register',
-  templateUrl: 'register.component.html',
-  styleUrls: ['./styles/register.scss'],
+  selector: 'app-edit-user',
+  templateUrl: './edit-user.component.html',
+  styleUrls: ['./edit-user.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class RegisterModalComponent implements OnInit {
-  addNewUserForm: FormGroup;
+export class EditUserComponent implements OnInit {
+
+  editUserForm: FormGroup;
   submitted = false;
   roles = settings.UserRoles;
+  value: any;
 
   constructor(
-    public dialogRef: MatDialogRef<RegisterModalComponent>,
+    public dialogRef: MatDialogRef<EditUserComponent>,
     private formBuilder: FormBuilder,
     private dashboardService: DashboardService,
-    private _router: Router
-  ) {}
+    private _router: Router,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) { }
 
   ngOnInit() {
-    this.addNewUserForm = this.formBuilder.group({
+    this.editUserForm = this.formBuilder.group({
+      id: [''],
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
-      userName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       mobileNumber: ['', Validators.required],
-      password: ['', [Validators.required, Validators.minLength(8)]],
       role: ['', Validators.required],
     });
 
+    this.dashboardService.getUser(this.data['_id'])
+    .subscribe(
+      data => { this.value = data;this.assignValue(); }
+    )
   }
 
-  get f() { return this.addNewUserForm.controls; }
+  assignValue(){
+    this.editUserForm.setValue({
+      id: this.value['_id'],
+      firstName: this.value['firstName'],
+      lastName: this.value['lastName'],
+      email: this.value['email'],
+      mobileNumber: this.value['mobileNumber'],
+      role: this.value['role']
+    });
+  }
+
+  get f() { return this.editUserForm.controls; }
 
   onSubmit() {
     this.submitted = true;
-    if (this.addNewUserForm.invalid) {
+    if (this.editUserForm.invalid) {
       console.log("Invalid"); return;
     }
 
-    this.dashboardService.addUserToDB(JSON.stringify(this.addNewUserForm.value))
+    this.dashboardService.editUser(JSON.stringify(this.editUserForm.value))
     .subscribe(
       data=> {
+        console.log(data);
         this.dialogRef.close();
         this._router.navigateByUrl('/user-management', {skipLocationChange: true}).then(()=>
         this._router.navigate(["/dashboard/user-management"]));

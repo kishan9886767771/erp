@@ -7,6 +7,8 @@ import { _ } from 'underscore';
 import {SelectionModel} from '@angular/cdk/collections';
 // import { RegisterModalComponent } from './register/register.component';
 import { DashboardService } from '../dashboard.service';
+import { AdditemComponent } from './additem/additem.component';
+import { EdititemComponent } from './edititem/edititem.component';
 var settings = require('../../../../../config/settings');
 
 export interface RowData {
@@ -59,6 +61,29 @@ export class ManageItemsComponent implements OnInit {
       search : ''
     });
     this.filtersForm.valueChanges.subscribe(form => { this.table1Filter(form); });
+  }
+
+  addItem(): void {
+    const dialogRef = this.dialog.open(AdditemComponent);
+  }
+
+  editItem(id: string): void {
+    const dialogRef = this.dialog.open(EdititemComponent, {
+      data: {
+        _id: id
+      }
+    });
+  }
+
+  deleteItem(id: string) {
+    this.dashboardService.deleteItem(id)
+    .subscribe(
+      data => {
+        this._router.navigateByUrl('/manage-items', {skipLocationChange: true}).then(()=>
+        this._router.navigate(["/dashboard/manage-items"]));
+      },
+      err => console.error(err)
+    )
   }
 
   ngOnInit() {

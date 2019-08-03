@@ -44,14 +44,6 @@ router.get('/logout', isValidUser, function(req,res,next){
   return res.status(200).json({message: "Logout Success"});
 });
 
-// Route to Delete User
-router.delete('/delete/:id', function (req, res) {
-  User.findByIdAndRemove({_id: new mongodb.ObjectID(req.params.id)}, function(err, data){
-    if(err) return res.status(501).json(err);
-    else return res.status(201).json(data);
-  });
-});
-
 // Route to Validate App Configrations
 router.get('/validate-first-time-setup', function(req,res,next){
   if (config.initConfig === true)
@@ -89,7 +81,71 @@ router.get('/get-all-users', function (req, res, next){
   })
 });
 
-// Route to get all users
+// Route to getUser
+router.get('/get-User/:id', function (req, res){
+  User.findOne({ _id: new mongodb.ObjectID(req.params.id) }, function (err, users){
+    if(err) return res.status(501).json({message: "User Data Fetch Failed"});
+    else return res.status(200).json(users);
+  })
+});
+
+// Edit User Route
+router.post('/edit-user',function(req,res,next){
+  editUser(req,res);
+});
+
+// Route to Delete User
+router.delete('/delete/:id', function (req, res) {
+  User.findByIdAndRemove({_id: new mongodb.ObjectID(req.params.id)}, function(err, data){
+    if(err) return res.status(501).json(err);
+    else return res.status(201).json(data);
+  });
+});
+
+// Route to Add Item
+router.post('/add-item',function(req,res,next){
+  var item = new MaintenanceItems({
+    type: req.body.type
+  });
+  
+  try{
+    doc = MaintenanceItems.createItem(item);
+    return res.status(201).json("Item Added To DB.");
+  }
+  catch(err){
+    return res.status(501).json(err);
+  }
+});
+
+// Route to getItem
+router.get('/get-item/:id', function (req, res){
+  MaintenanceItems.findOne({ _id: new mongodb.ObjectID(req.params.id) }, function (err, users){
+    if(err) return res.status(501).json({message: "User Data Fetch Failed"});
+    else return res.status(200).json(users);
+  })
+});
+
+// Edit Item Route
+router.post('/edit-item',function(req,res,next){
+  var newvalues = { $set: {
+    type: req.body.type,
+  } }; 
+
+  MaintenanceItems.findByIdAndUpdate({ _id: req.body.id }, newvalues, function(err, data){
+    if(err) return res.status(501).json(err);
+    else return res.status(201).json(data);
+  })
+});
+
+// Route to Delete Item
+router.delete('/delete-item/:id', function (req, res) {
+  MaintenanceItems.findByIdAndRemove({_id: new mongodb.ObjectID(req.params.id)}, function(err, data){
+    if(err) return res.status(501).json(err);
+    else return res.status(201).json(data);
+  });
+});
+
+// Route to get all maintenance items
 router.get('/get-all-maintenance-items', function (req, res, next){
   MaintenanceItems.find(function (err, users){
     if(err) return res.status(501).json({message: "Maintenance Data Fetch Failed"});
@@ -164,6 +220,23 @@ async function addToDB(req,res){
   catch(err){
     return res.status(501).json(err);
   }
+}
+
+// Method to Update User
+function editUser(req, res){
+
+  var newvalues = { $set: {
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    mobileNumber: req.body.mobileNumber,
+    email: req.body.email,
+    role: req.body.role
+  } }; 
+
+  User.findByIdAndUpdate({ _id: req.body.id }, newvalues, function(err, data){
+    if(err) return res.status(501).json(err);
+    else return res.status(201).json(data);
+  })
 }
 
 // Method to add User to DB

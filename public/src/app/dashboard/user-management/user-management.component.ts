@@ -6,6 +6,7 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { _ } from 'underscore';
 import {SelectionModel} from '@angular/cdk/collections';
 import { RegisterModalComponent } from './register/register.component';
+import { EditUserComponent } from './edit-user/edit-user.component';
 import { DashboardService } from '../dashboard.service';
 var settings = require('../../../../../config/settings');
 
@@ -98,6 +99,14 @@ export class UserManagementComponent implements OnInit {
 
   registerModal(): void {
     const dialogRef = this.dialog.open(RegisterModalComponent);
+  }
+
+  editModel(id: string): void {
+    const dialogRef = this.dialog.open(EditUserComponent, {
+      data: {
+        _id: id
+      }
+    });
   }
 
   deleteUser(id: string) {

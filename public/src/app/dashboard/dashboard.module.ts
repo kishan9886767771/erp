@@ -30,7 +30,11 @@ import { NouisliderModule } from 'ng2-nouislider';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
-import { CompaniesRegisterComponent } from './companies/companies-register/companies-register.component';
+import { EditUserComponent } from './user-management/edit-user/edit-user.component';
+import { AdditemComponent } from './manage-items/additem/additem.component';
+import { EdititemComponent } from './manage-items/edititem/edititem.component';
+import { AddcompanyComponent } from './companies/addcompany/addcompany.component';
+import { EditcompanyComponent } from './companies/editcompany/editcompany.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +49,11 @@ import { CompaniesRegisterComponent } from './companies/companies-register/compa
     CompaniesComponent,
     ManageItemsComponent,
     RegisterModalComponent,
-    CompaniesRegisterComponent
+    EditUserComponent,
+    AdditemComponent,
+    EdititemComponent,
+    AddcompanyComponent,
+    EditcompanyComponent
   ],
   imports: [
     NouisliderModule,
@@ -62,7 +70,12 @@ import { CompaniesRegisterComponent } from './companies/companies-register/compa
     DashboardRoutingModule
   ],
   entryComponents:[
-    RegisterModalComponent
+    RegisterModalComponent,
+    EditUserComponent,
+    AdditemComponent,
+    EdititemComponent,
+    AddcompanyComponent,
+    EditcompanyComponent
   ],
   providers: [
     DashboardService,

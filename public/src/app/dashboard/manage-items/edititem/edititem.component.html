@@ -1,0 +1,16 @@
+<div class="modal-register">
+  <div class="modal-register-form">
+    <h2 class="modal-title">Edit Item</h2>
+    <form class="form-horizontal" [formGroup]="editItemForm" (ngSubmit)="onSubmit()">
+      <div class="col-md-12">
+        <input formControlName="type" type="text" name="type" class="form-control" placeholder="First Name"
+        [ngClass]="{'invalid-textbox' :(submitted || f.type.touched) && !f.type.valid }">
+        <div *ngIf="(submitted || f.type.touched) && f.type.errors">
+          <label class="validation-message" *ngIf="f.type.errors.required">This field is required.</label>
+        </div>
+      </div>
+      <input formControlName="id" type="text" name="id" class="form-control" hidden>
+      <input type="submit" class="btn btn-register" value="Edit Item">
+    </form>
+  </div>
+</div>

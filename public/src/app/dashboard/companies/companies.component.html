@@ -11,7 +11,7 @@
             <h2 class="main-title">Company Management</h2>
           </div>
           <div class="col-xs-1">
-              <button type="button" class="btn" style="font-size: 33px; border: none; outline:none; background-color: transparent; display: inline-block; vertical-align: sub; color: green" (click)="registerModal()"><span class="glyphicon glyphicon-plus"></span></button>
+              <button type="button" class="btn" style="font-size: 33px; border: none; outline:none; background-color: transparent; display: inline-block; vertical-align: sub; color: green" (click)="addCompany()"><span class="glyphicon glyphicon-plus"></span></button>
           </div>
         </header>
 
@@ -98,8 +98,8 @@
             <ng-container matColumnDef="_id">
               <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
               <td mat-cell *matCellDef="let row">
-                <button type="button" class="btn" style="font-size: 22px; background-color: transparent; border: 0; display: inline-block; vertical-align: sub; color: yellowgreen"><span class="glyphicon glyphicon-edit"></span></button>
-                <button type="button" class="btn" style="font-size: 22px; background-color: transparent; border: 0; display: inline-block; vertical-align: sub; color: red" (click)="deleteUser(row._id)" ><span class="glyphicon glyphicon-trash"></span></button>
+                <button type="button" class="btn" style="font-size: 22px; background-color: transparent; border: 0; display: inline-block; vertical-align: sub; color: yellowgreen" (click)="editCompany(row._id)"><span class="glyphicon glyphicon-edit"></span></button>
+                <button type="button" class="btn" style="font-size: 22px; background-color: transparent; border: 0; display: inline-block; vertical-align: sub; color: red" (click)="deleteCompany(row._id)" ><span class="glyphicon glyphicon-trash"></span></button>
               </td>
             </ng-container>
 

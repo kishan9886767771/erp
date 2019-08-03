@@ -7,8 +7,10 @@ import { _ } from 'underscore';
 import {SelectionModel} from '@angular/cdk/collections';
 // import { RegisterModalComponent } from './register/register.component';
 import { DashboardService } from '../dashboard.service';
+import { AddcompanyComponent } from './addcompany/addcompany.component';
+import { EditcompanyComponent } from './editcompany/editcompany.component';
+
 var settings = require('../../../../../config/settings');
-import { CompaniesRegisterComponent } from './companies-register/companies-register.component';
 
 export interface RowData {
   name: string;
@@ -64,6 +66,29 @@ export class CompaniesComponent implements OnInit {
       search : ''
     });
     this.filtersForm.valueChanges.subscribe(form => { this.table1Filter(form); });
+  }
+
+  addCompany(): void {
+    const dialogRef = this.dialog.open(AddcompanyComponent);
+  }
+
+  editCompany(id: string): void {
+    const dialogRef = this.dialog.open(EditcompanyComponent, {
+      data: {
+        _id: id
+      }
+    });
+  }
+
+  deleteCompany(id: string) {
+    this.dashboardService.deleteCompany(id)
+    .subscribe(
+      data => {
+        this._router.navigateByUrl('/companies', {skipLocationChange: true}).then(()=>
+        this._router.navigate(["/dashboard/companies"]));
+      },
+      err => console.error(err)
+    )
   }
 
   ngOnInit() {

@@ -1,0 +1,46 @@
+<div class="modal-register">
+  <div class="modal-register-form">
+    <h2 class="modal-title">Edit User</h2>
+    <form class="form-horizontal" [formGroup]="editUserForm" (ngSubmit)="onSubmit()">
+      <div class="col-md-12">
+        <input formControlName="firstName" type="text" name="firstName" class="form-control" placeholder="First Name"
+        [ngClass]="{'invalid-textbox' :(submitted || f.firstName.touched) && !f.firstName.valid }">
+        <div *ngIf="(submitted || f.firstName.touched) && f.firstName.errors">
+          <label class="validation-message" *ngIf="f.firstName.errors.required">This field is required.</label>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <input formControlName="lastName" type="text" name="lastName" class="form-control" placeholder="Last Name"
+        [ngClass]="{'invalid-textbox' :(submitted || f.lastName.touched) && !f.lastName.valid }">
+        <div *ngIf="(submitted || f.lastName.touched) && f.lastName.errors">
+          <label class="validation-message" *ngIf="f.lastName.errors.required">This field is required.</label>
+        </div>
+      </div>
+      <input formControlName="id" type="text" name="id" class="form-control" hidden>
+      <div class="col-md-12">
+        <input formControlName="email" type="text" name="email" class="form-control" placeholder="Email"
+        [ngClass]="{'invalid-textbox' :(submitted || f.email.touched) && !f.email.valid }">
+        <div *ngIf="(submitted || f.email.touched) && f.email.errors">
+          <label class="validation-message" *ngIf="f.email.errors.required">This field is required.</label>
+          <label class="validation-message" *ngIf="f.email.errors.email">Invlid Email.</label>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <input formControlName="mobileNumber" type="text" name="mobileNumber" class="form-control" placeholder="Mobile Number"
+        [ngClass]="{'invalid-textbox' :(submitted || f.mobileNumber.touched) && !f.mobileNumber.valid }">
+        <div *ngIf="(submitted || f.mobileNumber.touched) && f.mobileNumber.errors">
+          <label class="validation-message" *ngIf="f.mobileNumber.errors.required">This field is required.</label>
+        </div>
+      </div>
+      <div class="col-md-12" style="margin-bottom: 20px">
+        <select class="form-control" formControlName="role" name="role">
+          <option disabled selected hidden value=""> -- select a role -- </option>
+          <option [value]="0"> Admin </option>
+          <option [value]="1"> Manager </option>
+          <option [value]="2"> User </option>
+        </select>
+      </div>
+      <input type="submit" class="btn btn-register" value="Edit User">
+    </form>
+  </div>
+</div>
