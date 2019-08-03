@@ -16,11 +16,6 @@ var config = require('../config/config');
 var fs = require('fs');
 var mongodb = require('mongodb');
 
-/* GET users listing. */
-// router.get('/', function(req, res, next) {
-//   res.send('respond with a resource');
-// });
-
 // Login Route
 router.post('/login',function(req, res, next){
   passport.authenticate('local', function(err, user, info) {
@@ -68,6 +63,8 @@ router.post('/first-time-setup',function(req,res,next){
   });
 });
 
+
+// User-Management
 // Route to Add User
 router.post('/add-user',function(req,res,next){
   addUserToDB(req,res);
@@ -102,6 +99,7 @@ router.delete('/delete/:id', function (req, res) {
   });
 });
 
+// Maintenance Items
 // Route to Add Item
 router.post('/add-item',function(req,res,next){
   var item = new MaintenanceItems({
@@ -151,6 +149,59 @@ router.get('/get-all-maintenance-items', function (req, res, next){
     if(err) return res.status(501).json({message: "Maintenance Data Fetch Failed"});
     else return res.status(200).json(users);
   })
+});
+
+// Companies
+// Route to Add Item
+router.post('/add-company',function(req,res,next){
+  req.body.phoneNo = req.body.phoneNo.map(function (item) { return item.phoneNo; });
+  req.body.mobileNo = req.body.mobileNo.map(function (item) { return item.mobileNo; });
+  addCompanyToDB(req,res);
+});
+
+// Route to getCompany
+router.get('/get-company/:id', function (req, res){
+  Company.findOne({ _id: new mongodb.ObjectID(req.params.id) }, function (err, users){
+    if(err) return res.status(501).json({message: "User Data Fetch Failed"});
+    else return res.status(200).json(users);
+  })
+});
+
+// Edit Item Route
+router.post('/edit-company',function(req,res,next){
+  req.body.phoneNo = req.body.phoneNo.map(function (item) { return item.phoneNo; });
+  req.body.mobileNo = req.body.mobileNo.map(function (item) { return item.mobileNo; });
+  var newvalues = { $set: {
+    name: req.body.name,
+    addressLine1: req.body.addressLine1,
+    addressLine2: req.body.addressLine2,
+    city: req.body.city,
+    state: req.body.state,
+    pincode: req.body.pincode,
+    phoneNo: req.body.phoneNo,
+    mobileNo: req.body.mobileNo,
+    email: req.body.email,
+    panNumber: req.body.panNumber,
+    accountNumber: req.body.accountNumber,
+    IFSC: req.body.IFSC,
+    GSTIN: req.body.GSTIN,
+    bankName: req.body.bankName,
+    bankBranch: req.body.bankBranch,
+    notes: req.body.notes
+  } }; 
+
+  Company.findByIdAndUpdate({ _id: req.body.id }, newvalues, function(err, data){
+    if(err) return res.status(501).json(err);
+    else return res.status(201).json(data);
+  })
+});
+
+// Route to Delete Item
+router.delete('/delete-company/:id', function (req, res) {
+  Company.findByIdAndRemove({_id: new mongodb.ObjectID(req.params.id)}, function(err, data){
+    if(err) return res.status(501).json(err);
+    else return res.status(201).json(data);
+  });
 });
 
 // Route to get all compines
@@ -257,6 +308,38 @@ async function addUserToDB(req,res){
     return res.status(201).json("User Added To DB.");
   }
   catch(err){
+    return res.status(501).json(err);
+  }
+}
+
+// Method to add Company to DB
+async function addCompanyToDB(req,res){
+  var company = new Company({
+    name: req.body.name,
+    addressLine1: req.body.addressLine1,
+    addressLine2: req.body.addressLine2,
+    city: req.body.city,
+    state: req.body.state,
+    pincode: req.body.pincode,
+    phoneNo: req.body.phoneNo,
+    mobileNo: req.body.mobileNo,
+    email: req.body.email,
+    panNumber: req.body.panNumber,
+    accountNumber: req.body.accountNumber,
+    IFSC: req.body.IFSC,
+    GSTIN: req.body.GSTIN,
+    bankName: req.body.bankName,
+    bankBranch: req.body.bankBranch,
+    notes: req.body.notes
+  });
+  
+  try{
+    doc = await Company.createCompany(company);
+    console.log(doc);
+    return res.status(201).json("Company Added To DB.");
+  }
+  catch(err){
+    //console.log(err);
     return res.status(501).json(err);
   }
 }
