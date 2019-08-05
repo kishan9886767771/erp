@@ -152,7 +152,7 @@ router.get('/get-all-maintenance-items', function (req, res, next){
 });
 
 // Companies
-// Route to Add Item
+// Route to Add Company
 router.post('/add-company',function(req,res,next){
   req.body.phoneNo = req.body.phoneNo.map(function (item) { return item.phoneNo; });
   req.body.mobileNo = req.body.mobileNo.map(function (item) { return item.mobileNo; });
@@ -212,11 +212,58 @@ router.get('/get-all-companies', function (req, res, next){
   })
 });
 
+// Units
+
+// Route to Add Unit
+router.post('/add-unit',function(req,res,next){
+  percentageOwnership_temp = req.body.companies.map(function (item) { return item.percentageOwnership });
+  req.body.companies = req.body.companies.map(function (item) { return item.company });
+  // console.log(req.body.companies,'COMPANY VALUE')
+  addUnitToDB(req,res);
+});
+
+// Route to Delete Item
+router.delete('/delete-unit/:id', function (req, res) {
+  Unit.findByIdAndRemove({_id: new mongodb.ObjectID(req.params.id)}, function(err, data){
+    if(err) return res.status(501).json(err);
+    else return res.status(201).json(data);
+  });
+});
+
 // Route to get all Units
 router.get('/get-all-units', function (req, res, next){
-  Unit.find(function (err, users){
-    if(err) return res.status(501).json({message: "Company Data Fetch Failed"});
-    else return res.status(200).json(users);
+  Unit.aggregate([
+    {
+      "$lookup" : {
+        from: "units",
+        localField: "parent",
+        foreignField: "_id",
+        as: "ParentUnit"       
+      }
+    },
+    // { "$unwind": "$ParentUnit" },
+    {
+      "$lookup" : {
+        from: "companies",
+        localField: "company",
+        foreignField: "_id",
+        as: "CompanyNames"       
+      }
+    },
+    // { "$unwind": "$ParentUnit" },
+    // {
+    //   $project: {
+    //     _id: 1,
+    //     unitNo: 1,
+    //     addressLine1: 1,
+    //     ParentUnit: 1,
+    //     CompanyNames: 1,
+    //     area: 1
+    //   }
+    // }
+  ], function (err, units){
+    if(err) return res.status(501).json({message: "Units Data Fetch Failed"});
+    else return res.status(200).json(units);
   })
 });
 
@@ -340,6 +387,49 @@ async function addCompanyToDB(req,res){
   }
   catch(err){
     //console.log(err);
+    return res.status(501).json(err);
+  }
+}
+
+// Method to add Company to DB
+async function addUnitToDB(req,res){
+  // console.log(req.body);
+  // return
+  if(req.body.hasParent){
+    var unit = new Unit({
+      unitNo: req.body.unitNo,
+      hasParent: req.body.hasParent,
+      parent: req.body.parent,
+      addressLine1: req.body.addressLine1,
+      addressLine2: req.body.addressLine2,
+      city: req.body.city,
+      state: req.body.state,
+      pincode: req.body.pincode,
+      area: req.body.area,
+      company: req.body.companies
+    });
+  }
+  else {
+    var unit = new Unit({
+      unitNo: req.body.unitNo,
+      hasParent: req.body.hasParent,
+      addressLine1: req.body.addressLine1,
+      addressLine2: req.body.addressLine2,
+      city: req.body.city,
+      state: req.body.state,
+      pincode: req.body.pincode,
+      area: req.body.area,
+      company: req.body.companies,
+      percentageOwnership: percentageOwnership_temp
+    });
+  }
+  // console.log(unit);
+  try{
+    doc = await Unit.createUnit(unit);
+    console.log("Hello: ", doc);
+    return res.status(201).json(doc);
+  }
+  catch(err){
     return res.status(501).json(err);
   }
 }

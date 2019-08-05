@@ -192,4 +192,98 @@ export class DashboardService {
     });
   }
 
+  // Units
+  addUnit(body:any) {
+    return this._http.post('http://127.0.0.1:3000/users/add-unit',body,{
+      observe: 'body',
+      withCredentials: true,
+      headers: new HttpHeaders().append('Content-Type','application/json')
+    });
+  }
+
+  deleteUnit(id: string) {
+    return this._http.delete('http://127.0.0.1:3000/users/delete-unit/'+id, {
+      observe: 'body',
+      withCredentials: true,
+      headers: new HttpHeaders().append('Content-Type','application/json')
+    })
+  }
+
+}
+
+@Injectable()
+export class AutoCompleterService {
+  options = undefined;
+
+  constructor(private http: HttpClient) {}
+
+  getData(filter): Promise<any> {
+    if (this.options) {
+      return new Promise((resolve, reject) => {
+        resolve(this.filterOptions(filter));
+      });
+    } else {
+      return new Promise((resolve, reject) => {
+        this.http.get('http://localhost:3000/users/get-all-units')
+        .subscribe(
+          data => {
+            this.options = data;
+            resolve(this.filterOptions(filter));
+          },
+          err => reject()
+        );
+      });
+    }
+  }
+
+  filterOptions(filter): Array<String> {
+    return (this.options.filter(
+      option => this.fuzzysearch(filter, option.unitNo)
+    ));
+  }
+
+  getCompanyData(filter): Promise<any> {
+    if (this.options) {
+      return new Promise((resolve, reject) => {
+        resolve(this.filterCompanyOptions(filter));
+      });
+    } else {
+      return new Promise((resolve, reject) => {
+        this.http.get('http://localhost:3000/users/get-all-companies')
+        .subscribe(
+          data => {
+            this.options = data;
+            resolve(this.filterCompanyOptions(filter));
+          },
+          err => reject()
+        );
+      });
+    }
+  }
+
+  filterCompanyOptions(filter): Array<String> {
+    return (this.options.filter(
+      option => this.fuzzysearch(filter, option.name)
+    ));
+  }
+
+  // Credit: https://github.com/bevacqua/fuzzysearch
+  fuzzysearch(needle, haystack): Boolean {
+    const hlen = haystack.length;
+    const nlen = needle.length;
+
+    if (nlen > hlen) { return false; }
+
+    needle = needle.toLowerCase();
+    haystack = haystack.toLowerCase();
+
+    let nIdx = 0;
+    let hIdx = 0;
+    while (nIdx < nlen) {
+      if (hIdx >= hlen) { return false; }
+      if (needle.charCodeAt(nIdx) === haystack.charCodeAt(hIdx++)) { nIdx++; }
+    }
+
+    return true;
+  }
 }

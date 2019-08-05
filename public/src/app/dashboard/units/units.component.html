@@ -11,7 +11,7 @@
               <h2 class="main-title">Unit Management</h2>
             </div>
             <div class="col-xs-1">
-                <button type="button" class="btn" style="font-size: 33px; border: none; outline:none; background-color: transparent; display: inline-block; vertical-align: sub; color: green" (click)="registerModal()"><span class="glyphicon glyphicon-plus"></span></button>
+                <button type="button" class="btn" style="font-size: 33px; border: none; outline:none; background-color: transparent; display: inline-block; vertical-align: sub; color: green" (click)="addUnit()"><span class="glyphicon glyphicon-plus"></span></button>
             </div>
           </header>
   
@@ -75,14 +75,23 @@
                 <td mat-cell *matCellDef="let row"> {{row.addressLine1}} </td>
               </ng-container>
   
-              <ng-container matColumnDef="addressLine2">
+              <ng-container matColumnDef="ParentUnit">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> PARENT UNIT ADDRESS </th>
-                <td mat-cell *matCellDef="let row"> {{row.addressLine2}} </td>
+                <td mat-cell *matCellDef="let row">
+                    <!-- {{row.CompanyNames[0].ParentUnit.addressLine1}}   -->
+                    <span *ngFor='let key of row.ParentUnit'>
+                        {{ key.addressLine1 }}
+                    </span>
+                </td>
               </ng-container>
   
-              <ng-container matColumnDef="company">
+              <ng-container matColumnDef="CompanyNames">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> COMPANIES </th>
-                <td mat-cell *matCellDef="let row"> {{row.company}} </td>
+                <td mat-cell *matCellDef="let row"> 
+                  <span *ngFor='let key of row.CompanyNames'>
+                      {{ key.name }}
+                  </span>  
+                </td>
               </ng-container>
   
               <ng-container matColumnDef="area">

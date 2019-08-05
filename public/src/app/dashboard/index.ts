@@ -2,6 +2,8 @@ export { DashboardService } from './dashboard.service';
 
 export { UserTableResolver, MaintenanceItemsTableResolver, CompanyTableResolver, UnitsTableResolver, TenantsTableResolver, RentalAgreementsTableResolver, InvoicesTableResolver } from './dashboard.resolver';
 
+export { AutoCompleterService } from './dashboard.service';
+
 export { DashboardComponent } from './dashboard.component';
 
 export { RegisterModalComponent } from './user-management/register/register.component';
@@ -12,6 +14,9 @@ export { EdititemComponent } from './manage-items/edititem/edititem.component';
 
 export { AddcompanyComponent } from './companies/addcompany/addcompany.component';
 export { EditcompanyComponent } from './companies/editcompany/editcompany.component';
+
+export { AddUnitComponent } from './units/add-unit/add-unit.component';
+export { EditUnitComponent } from './units/edit-unit/edit-unit.component';
 
 export { RemindersComponent } from './reminders/reminders.component';
 export { InvoicesComponent } from './invoices/invoices.component';

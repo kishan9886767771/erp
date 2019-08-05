@@ -1,0 +1,93 @@
+<div class="modal-register">
+    <div class="modal-register-form">
+      <h2 class="modal-title">Add New Unit</h2>
+      <form class="form-horizontal" [formGroup]="addUnitForm" (ngSubmit)="onSubmit()">
+        <div class="col-md-12">
+          <input formControlName="unitNo" type="text" name="unitNo" class="form-control" placeholder="Unit No"
+          [ngClass]="{'invalid-textbox' :(submitted || f.unitNo.touched) && !f.unitNo.valid }">
+          <div *ngIf="(submitted || f.unitNo.touched) && f.unitNo.errors">
+            <label class="validation-message" *ngIf="f.unitNo.errors.required">This field is required.</label>
+          </div>
+        </div>
+        <div class="col-md-12" style="margin-bottom: 18px">
+          <label class="checkbox-inline"><input formControlName="hasParent" type="checkbox" name="hasParent" value="true">Has Parent</label>
+        </div>
+        <div class="col-md-12" *ngIf="f.hasParent.value">
+          <input matInput [matAutocomplete]="auto1" formControlName="parent" type="text" name="parent" 
+          class="form-control" placeholder="Parent" (keyup)="filter($event, 'simple')"
+          [ngClass]="{'invalid-textbox' :(submitted || f.parent.touched) && !f.parent.valid }">
+          <mat-autocomplete #auto1="matAutocomplete">
+              <mat-option *ngFor="let option of options.simple" [value]="option.unitNo">
+                {{ option.unitNo }}
+              </mat-option>
+           </mat-autocomplete>
+          <div *ngIf="(submitted || f.parent.touched) && f.parent.errors">
+            <label class="validation-message" *ngIf="f.parent.errors.required">This field is required.</label>
+          </div>
+        </div>
+        <div class="col-md-12">
+            <input formControlName="addressLine1" type="text" name="addressLine1" class="form-control" placeholder="Address Line 1"
+            [ngClass]="{'invalid-textbox' :(submitted || f.addressLine1.touched) && !f.addressLine1.valid }">
+            <div *ngIf="(submitted || f.addressLine1.touched) && f.addressLine1.errors">
+              <label class="validation-message" *ngIf="f.addressLine1.errors.required">This field is required.</label>
+            </div>
+          </div>
+        <div class="col-md-12">
+          <input formControlName="addressLine2" type="text" name="addressLine2" class="form-control" placeholder="Address Line 2"
+          [ngClass]="{'invalid-textbox' :(submitted || f.addressLine2.touched) && !f.addressLine2.valid }">
+          <div *ngIf="(submitted || f.addressLine2.touched) && f.addressLine2.errors">
+            <label class="validation-message" *ngIf="f.addressLine2.errors.required">This field is required.</label>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <input formControlName="city" type="text" name="city" class="form-control" placeholder="City"
+          [ngClass]="{'invalid-textbox' :(submitted || f.city.touched) && !f.city.valid }">
+          <div *ngIf="(submitted || f.city.touched) && f.city.errors">
+            <label class="validation-message" *ngIf="f.city.errors.required">This field is required.</label>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <input formControlName="state" type="text" name="state" class="form-control" placeholder="State"
+          [ngClass]="{'invalid-textbox' :(submitted || f.state.touched) && !f.state.valid }">
+          <div *ngIf="(submitted || f.state.touched) && f.state.errors">
+            <label class="validation-message" *ngIf="f.state.errors.required">This field is required.</label>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <input formControlName="pincode" type="text" name="pincode" class="form-control" placeholder="Pincode"
+          [ngClass]="{'invalid-textbox' :(submitted || f.pincode.touched) && !f.pincode.valid }">
+          <div *ngIf="(submitted || f.pincode.touched) && f.pincode.errors">
+            <label class="validation-message" *ngIf="f.pincode.errors.required">This field is required.</label>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <input formControlName="area" type="text" name="area" class="form-control" placeholder="Area"
+          [ngClass]="{'invalid-textbox' :(submitted || f.area.touched) && !f.area.valid }">
+          <div *ngIf="(submitted || f.area.touched) && f.area.errors">
+            <label class="validation-message" *ngIf="f.area.errors.required">This field is required.</label>
+          </div>
+        </div>
+
+        <div class="col-md-12" formArrayName="companies" style="margin-left: 15px">
+          <div *ngFor="let phone of addUnitForm.controls.companies.controls; let i=index">
+              <div [formGroupName]="i">
+                  <div class="row">
+                      <input matInput [matAutocomplete]="auto2" (keyup)="filterCompany($event, 'simple')" formControlName="company" type="text" name="company" class="form-control col-md-6" placeholder="Company Name" style="margin-right: 10px">
+                      <mat-autocomplete #auto2="matAutocomplete">
+                          <mat-option *ngFor="let option of options2.simple" [value]="option.name">
+                            {{ option.name }}
+                          </mat-option>
+                       </mat-autocomplete>
+                      <input formControlName="percentageOwnership" type="text" name="percentageOwnership" class="form-control col-md-3" placeholder="Percentage Ownership">
+                      <button type="button" class="btn" style="font-size: 18px; border: none; outline:none; background-color: transparent; display: inline-block; vertical-align: sub;" (click)="addUnit()"><span class="glyphicon glyphicon-plus"></span></button>
+                      <button type="button" class="btn" style="font-size: 18px; border: none; outline:none; background-color: transparent; display: inline-block; vertical-align: sub;" (click)="removeUnit(i)" *ngIf="addUnitForm.controls.companies.controls.length > 1"><span class="glyphicon glyphicon-minus"></span></button>
+                  </div>
+              </div>
+          </div>
+        </div>
+
+        <input type="submit" class="btn btn-register" value="Add Unit">
+      </form>
+    </div>
+  </div>
+  

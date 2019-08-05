@@ -9,6 +9,7 @@ import { SharedModule } from '../shared/shared.module';
 import { HttpClientModule } from '@angular/common/http';
 
 import { DashboardService } from './dashboard.service';
+import { AutoCompleterService } from './dashboard.service';
 import { UserTableResolver, MaintenanceItemsTableResolver, CompanyTableResolver, UnitsTableResolver, TenantsTableResolver, RentalAgreementsTableResolver, InvoicesTableResolver } from './dashboard.resolver';
 
 import { RegisterModalComponent } from './user-management/register/register.component';
@@ -35,6 +36,8 @@ import { AdditemComponent } from './manage-items/additem/additem.component';
 import { EdititemComponent } from './manage-items/edititem/edititem.component';
 import { AddcompanyComponent } from './companies/addcompany/addcompany.component';
 import { EditcompanyComponent } from './companies/editcompany/editcompany.component';
+import { AddUnitComponent } from './units/add-unit/add-unit.component';
+import { EditUnitComponent } from './units/edit-unit/edit-unit.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +56,9 @@ import { EditcompanyComponent } from './companies/editcompany/editcompany.compon
     AdditemComponent,
     EdititemComponent,
     AddcompanyComponent,
-    EditcompanyComponent
+    EditcompanyComponent,
+    AddUnitComponent,
+    EditUnitComponent
   ],
   imports: [
     NouisliderModule,
@@ -75,10 +80,13 @@ import { EditcompanyComponent } from './companies/editcompany/editcompany.compon
     AdditemComponent,
     EdititemComponent,
     AddcompanyComponent,
-    EditcompanyComponent
+    EditcompanyComponent,
+    AddUnitComponent,
+    EditUnitComponent
   ],
   providers: [
     DashboardService,
+    AutoCompleterService,
     UserTableResolver,
     MaintenanceItemsTableResolver,
     CompanyTableResolver,

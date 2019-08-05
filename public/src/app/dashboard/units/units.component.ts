@@ -7,13 +7,16 @@ import { _ } from 'underscore';
 import {SelectionModel} from '@angular/cdk/collections';
 // import { RegisterModalComponent } from './register/register.component';
 import { DashboardService } from '../dashboard.service';
+import { AutoCompleterService } from '../dashboard.service';
+import { AddUnitComponent } from './add-unit/add-unit.component';
+import { EditUnitComponent } from './edit-unit/edit-unit.component';
 var settings = require('../../../../../config/settings');
 
 export interface RowData {
   unitNo: string
   addressLine1: string
-  addressLine2: string
-  company: string
+  ParentUnit: any
+  CompanyNames: any
   area: number
   _id: number
 }
@@ -28,7 +31,7 @@ export interface RowData {
 export class UnitsComponent implements OnInit {
 
   // Table 1 - external filters
-  displayedColumnsTable1: string[] = ['unitNo', 'addressLine1', 'addressLine2', 'company', 'area', '_id'];
+  displayedColumnsTable1: string[] = ['unitNo', 'addressLine1', 'ParentUnit', 'CompanyNames', 'area', '_id'];
   dataSourceTable1: MatTableDataSource<RowData>;
   @ViewChild('paginatorTable1') paginatorTable1: MatPaginator;
   @ViewChild('sortTable1') sortTable1: MatSort;
@@ -51,6 +54,7 @@ export class UnitsComponent implements OnInit {
     private _router: Router,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
+    console.log(this.displayedColumnsTable1);
     this.isBrowser = isPlatformBrowser(platformId);
 
     this.originalData = route.snapshot.data['tableData'].data;
@@ -62,6 +66,29 @@ export class UnitsComponent implements OnInit {
       search : ''
     });
     this.filtersForm.valueChanges.subscribe(form => { this.table1Filter(form); });
+  }
+
+  addUnit(): void {
+    const dialogRef = this.dialog.open(AddUnitComponent);
+  }
+
+  editUnit(id: string): void {
+    const dialogRef = this.dialog.open(EditUnitComponent, {
+      data: {
+        _id: id
+      }
+    });
+  }
+
+  deleteUnit(id: string) {
+    this.dashboardService.deleteUnit(id)
+    .subscribe(
+      data => {
+        this._router.navigateByUrl('/units', {skipLocationChange: true}).then(()=>
+        this._router.navigate(["/dashboard/units"]));
+      },
+      err => console.error(err)
+    )
   }
 
   ngOnInit() {

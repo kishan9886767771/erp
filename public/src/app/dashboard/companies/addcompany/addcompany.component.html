@@ -45,16 +45,16 @@
         </div>
       </div>
       <div class="col-md-12" formArrayName="phoneNo" style="margin-left: 15px">
-          <div *ngFor="let phone of addCompanyForm.controls.phoneNo.controls; let i=index">
-              <div [formGroupName]="i">
-                  <div class="row">
-                      <input formControlName="phoneNo" type="text" name="phoneNo" class="form-control col-md-9" placeholder="Phone No">
-                      <button type="button" class="btn" style="font-size: 18px; border: none; outline:none; background-color: transparent; display: inline-block; vertical-align: sub;" (click)="addPhone()"><span class="glyphicon glyphicon-plus"></span></button>
-                      <button type="button" class="btn" style="font-size: 18px; border: none; outline:none; background-color: transparent; display: inline-block; vertical-align: sub;" (click)="removePhone(i)" *ngIf="addCompanyForm.controls.phoneNo.controls.length > 1"><span class="glyphicon glyphicon-minus"></span></button>
-                  </div>
-              </div>
-          </div>
+        <div *ngFor="let phone of addCompanyForm.controls.phoneNo.controls; let i=index">
+            <div [formGroupName]="i">
+                <div class="row">
+                    <input formControlName="phoneNo" type="text" name="phoneNo" class="form-control col-md-9" placeholder="Phone No">
+                    <button type="button" class="btn" style="font-size: 18px; border: none; outline:none; background-color: transparent; display: inline-block; vertical-align: sub;" (click)="addPhone()"><span class="glyphicon glyphicon-plus"></span></button>
+                    <button type="button" class="btn" style="font-size: 18px; border: none; outline:none; background-color: transparent; display: inline-block; vertical-align: sub;" (click)="removePhone(i)" *ngIf="addCompanyForm.controls.phoneNo.controls.length > 1"><span class="glyphicon glyphicon-minus"></span></button>
+                </div>
+            </div>
         </div>
+      </div>
         <div class="col-md-12" formArrayName="mobileNo" style="margin-left: 15px">
           <div *ngFor="let phone of addCompanyForm.controls.mobileNo.controls; let i=index">
               <div [formGroupName]="i">
