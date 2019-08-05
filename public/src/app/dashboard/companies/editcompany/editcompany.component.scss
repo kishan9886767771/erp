@@ -4,7 +4,11 @@
 .modal-register {
   max-width: 100%;
   text-align: center;
-  width: 350px;
+  width: 450px;
+
+  overflow-y: auto;
+  max-height: 90vh;
+  
 
   .brand-logo {
     height: auto;
